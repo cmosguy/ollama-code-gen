@@ -1,0 +1,36 @@
+services:
+  app:
+    build: .
+    container_name: python-server
+    command: python ./src/main.py
+    ports:
+      - 5678:5678
+    volumes:
+      - .:/code
+    depends_on:
+      - thinker
+      - engineer
+
+  thinker:
+    image: thebloke/cuda11.8.0-ubuntu22.04-oneclick
+    ports:
+      - 5000:5000
+      - 7860:7860
+    volumes:
+      - c:/tmp/workspace:/workspace
+    environment:
+      - MODEL=https://huggingface.co/TheBloke/dolphin-2.2.1-mistral-7B-GGUF/resolve/main/dolphin-2.2.1-mistral-7b.Q5_K_S.gguf
+    restart: always
+
+  engineer:
+    image: thebloke/cuda11.8.0-ubuntu22.04-oneclick
+    ports:
+      - 5001:5000
+      - 7861:7860
+    volumes:
+      - c:/tmp/workspace:/workspace
+    environment:
+      - UI_ARGS=--verbose
+      - MODEL=https://huggingface.co/TheBloke/CodeLlama-7B-GGUF/resolve/main/codellama-7b.Q5_K_S.gguf
+
+    restart: always

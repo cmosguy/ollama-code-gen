@@ -1,0 +1,3 @@
+pyautogen
+litellm
+debugpy
